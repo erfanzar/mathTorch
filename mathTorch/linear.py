@@ -1,21 +1,14 @@
-import sys
-import time
-
-import numpy as np
-import yaml
-
-x = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 3, 5, 9, 7, 1, 3, 5, 6],
-    [9, 8, 5, 3, 1, 5, 7, 9, 8]
-]
-
-y = [
-    [45],
-    [40],
-    [55]
-]
-
+try : 
+    import sys
+    import time
+    import numpy as np
+    import yaml
+except:
+    import os
+    os.system('pip install numpy')
+    os.system('pip install yaml')
+    
+    
 filt_type = [float, int, list, tuple]
 
 
