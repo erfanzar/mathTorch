@@ -1,15 +1,15 @@
-try : 
+try:
     import sys
     import time
     import numpy as np
     import yaml
-except:
+except OSError:
     import os
+
     os.system('pip install numpy')
     os.system('pip install yaml')
-    
-    
-filt_type = [float, int, list, tuple]
+
+filter_type = [float, int, list, tuple]
 
 
 class Linear:
@@ -34,8 +34,8 @@ class Linear:
         self.lr = np.array([3e-4])
 
     def forward(self,
-                inputs: filt_type,
-                targets: filt_type,
+                inputs: filter_type,
+                targets: filter_type,
                 ):
         self.times += 1
         self.inputs = np.array(inputs, dtype=np.float64)
