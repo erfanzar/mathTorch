@@ -1,6 +1,4 @@
 try:
-    # from ..utils.interfaces import colorp
-    # from ..utils.shape import __reshape__
     import sys
     import time
     import numpy as np
@@ -84,15 +82,3 @@ class Conv:
 
         return None
 
-
-if __name__ == '__main__':
-    nn = Conv(channels=3, kernel_size=3)
-
-    x = np.random.randn(300, 300, 3)
-    out = nn.forward(x)
-    out = out.reshape((out.shape[1], out.shape[2], out.shape[0]))
-    sys.stdout.write(colorp(out.shape, red=0, blue=255, green=255))
-    sys.stdout.flush()
-    while True:
-        cv.imshow('out', out)
-        cv.waitKey(1)

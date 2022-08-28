@@ -1,91 +1,28 @@
-try:
-    import sys
-    import time
-    import numpy as np
-    import yaml
-except OSError:
-    import os
+import numpy as np
 
-    os.system('pip install numpy')
-    os.system('pip install yaml')
-
-filter_type = [float, int, list, tuple]
+from .layer import Layer
 
 
-class Linear:
-    def __init__(
-            self,
-            input_size: int,
-            target_size: int,
-            train: bool = True,
-            save: bool = False
-    ):
-        self.inputs = None
-        self.output = None
-        self.train = train
-        self.targets = None
-        self.times = 0
-        self.error = None
-        self.accuracy = 0
-        self.input_size = input_size
-        self.target_size = target_size
-        self.w = np.random.randn(self.input_size, self.target_size)
-        self.b = 1
-        self.lr = np.array([3e-4])
+class Linear(Layer):
+    def __init__(self, in_dim, out_dim):
+        super(Linear, self).__init__()
+        self.in_dim = in_dim
+        self.out_dim = out_dim
+        self.weights = np.random.randn(in_dim, out_dim) - 0.5  #
+        self.bias = np.random.randn(1, out_dim) - 0.5  #
+        self.input = None
+        self.out = None
 
-    def forward(self,
-                inputs: filter_type,
-                targets: filter_type,
-                ):
-        self.times += 1
-        self.inputs = np.array(inputs, dtype=np.float64)
-        self.targets = np.array(targets, dtype=np.float64)
-        self.output = self.w.T.dot(self.inputs) + self.b
-        if self.train:
-            self.backward()
-        self.accuracy += 1 if self.output == self.targets else 0
-        self.accuracy /= self.times
-        self.print_function()
-        return self.output
+    def forward(self, x, *args):
+        self.input = x
+        self.out = np.dot(self.input, self.weights) + self.bias
+        return self.out
 
-    def print_function(self):
-        sys.stdout.write(f'\r prediction : {self.output} / {self.targets} accuracy : {self.accuracy} ')
-        sys.stdout.flush()
+    def backward(self, output_error, lr):
+        input_error = np.dot(output_error, self.weights.T)
+        weights_error = np.dot(self.input.T, output_error)
 
-    def load_point(self, file: str):
-        try:
-            with open(f'{file}', 'r') as rd:
-                read = yaml.full_load(rd)
-                if self.input_size == read[0]["input_size"] and self.target_size == read[1]["target_size"]:
-                    self.w = np.array(read[2]['weights'])
-                    self.b = np.array(read[3]['biases'])
-                    self.lr = np.array(read[4]['lr'])
-                    print(f'Read Wights : {self.w}')
-                    time.sleep(5)
-                else:
-                    sys.stdout.write('neuron with saved weights are not same size \n'
-                                     f'excepted input size : {self.input_size} found {read[0]["input_size"]}\n'
-                                     f'excepted targets size : {self.target_size} found {read[1]["target_size"]}\n'
-                                     )
-                    time.sleep(5)
+        self.weights -= lr * weights_error
+        self.bias -= lr * output_error
 
-        except OSError:
-            print('No file found')
-
-    def backward(self):
-        self.error = self.targets - self.output
-        perhaps = self.inputs * self.error * self.lr
-        perhaps = np.resize(perhaps, self.w.shape)
-        self.w += perhaps
-        self.b += self.error * self.lr
-
-    def save_point(self, name: str = 'save'):
-        with open(f'{name}.yaml', 'a') as sv:
-            point = [
-                {'input_size': self.input_size},
-                {'target_size': self.target_size},
-                {'weights': self.w.tolist()},
-                {'biases': self.b.tolist()},
-                {'lr': self.lr.tolist()}
-            ]
-            writer = yaml.dump(point, sv)
+        return input_error

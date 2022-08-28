@@ -3,6 +3,7 @@ try:
     import time
     import numpy as np
     import yaml
+    from .layer import Layer
 except OSError:
     import os
 
@@ -12,7 +13,7 @@ except OSError:
 nodes_union = [tuple, int]
 
 
-class Softmax:
+class Softmax(Layer):
     def __init__(self, input_len: int, bs: nodes_union):
         super(Softmax, self).__init__()
         self.last_shape = None
@@ -39,3 +40,83 @@ class Softmax:
 
             texp = np.exp(self.oot)
             s = np.sum(texp)
+
+
+class ActivationLayer(Layer):
+    def __init__(self, use_act: str = 'relu'):
+        super(ActivationLayer, self).__init__()
+        if use_act == 'relu':
+            self.activation = relu
+            self.activation_prime = relu
+
+        if use_act == 'mse':
+            self.activation = mse
+            self.activation_prime = mse_prime
+
+        if use_act == 'tanh':
+            self.activation = tanh
+            self.activation_prime = tanh_prime
+
+        self.x = None
+        self.out = None
+        self.weights = "ReLU"
+        self.bias = "ReLU"
+        self.in_dim = "ReLU"
+        self.out_dim = "ReLU"
+
+    def forward(self, x, *args):
+        self.x = x
+        self.out = self.activation(self.x)
+        return self.out
+
+    def backward(self, output_error, lr):
+        return self.activation_prime(self.x) * output_error
+
+
+def tanh(x):
+    return np.tanh(x)
+
+
+def tanh_prime(x):
+    return 1 - np.tanh(x) ** 2
+
+
+def mse(y_true, y_pred):
+    return np.mean(np.power(y_true - y_pred, 2))
+
+
+def mse_prime(y_true, y_pred):
+    return 2 * (y_pred - y_true) / y_true.size
+
+
+def relu(x):
+    return max(0, x.all())
+
+
+class Mse(Layer):
+    def __init__(self):
+        super(Mse, self).__init__()
+        self.y = None
+        self.y_hat = None
+
+    def forward(self, x, *args):
+        self.y = x
+        self.y_hat = args[0]
+
+        return np.mean(np.power(self.y - self.y_hat, 2))
+
+    def backward(self, output_error, lr):
+        return 2 * (self.y_hat - self.y) / self.y.size
+
+
+class ReLU(Layer):
+    def __init__(self):
+        super(ReLU, self).__init__()
+        self.out = None
+
+    def forward(self, x, *args):
+        self.out = max(0, x.all())
+        return self.out
+
+    def backward(self, output_error, lr):
+        return self.out * output_error * lr
