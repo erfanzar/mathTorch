@@ -1,5 +1,6 @@
 import numpy as np
 import yaml
+import typing
 
 
 class Layer:
@@ -43,7 +44,7 @@ class Network(Layer):
     def set_act(self, act):
         self.act = act
 
-    def ckpt(self, name: str = 'save'):
+    def mt(self, name):
         data = [
             {
                 f'{idx}': [
@@ -54,8 +55,8 @@ class Network(Layer):
                 ]
             } for idx, ls in enumerate(self.layers)]
         print(data)
-        with open(f'{name}.yaml', 'w') as w:
-            yaml.dump(data, w)
+        with open(f'{name}.mt', 'w') as w:
+            w.write(f"{data}")
 
     def forward(self, x, *args):
         if len(self.layers) > 0:

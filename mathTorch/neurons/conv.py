@@ -2,15 +2,14 @@ try:
     import sys
     import time
     import numpy as np
-    import yaml
-    import cv2 as cv
-except OSError:
-    import os
-    from ..utils.interfaces import colorp
 
-    colorp('Downloading Dependencies', 255, 100, 100)
+    import numba as nb
+except ImportWarning:
+    import os
+    from ..utils.utils import printf
+
+    printf('Downloading Dependencies')
     os.system('pip install numpy')
-    os.system('pip install yaml')
 
 filter_type = [int, list, tuple]
 
@@ -24,15 +23,6 @@ def __reshape__(inp: union_reshape) -> union_reshape:
     """
     inp = inp.reshape(inp.shape[2], inp.shape[0], inp.shape[1])
     return inp
-
-
-def colorp(
-        *args: print_union,
-        red: int = 255,
-        blue: int = 255,
-        green: int = 255,
-) -> str:
-    return f'\r\033[38;2;{red};{blue};{green}m{args}\033[38;2;255;255;255m'
 
 
 class Conv:
@@ -57,16 +47,16 @@ class Conv:
         ch, cw, cc = inputs.shape
         self.inputs = inputs
         for c in range(self.channels):
-            for h in range(ch - self.kernel_size + self.padding):
-                for w in range(cw - self.kernel_size + self.padding):
+            for h in range(((ch - self.kernel_size) / self.stride) + self.padding):
+                for w in range(((cw - self.kernel_size) / self.stride) + self.padding):
                     iteration = inputs[c, h:h + self.kernel_size, w:w + self.kernel_size]
                     yield iteration, c, h, w
 
     def forward(self, inputs):
-        inputs = __reshape__(inp=inputs)
         self.last_input = inputs
         cc, ch, cw = inputs.shape
-        prediction = np.zeros((self.channels, ch - self.kernel_size, cw - self.kernel_size))
+        prediction = np.zeros((self.channels, ((ch - self.kernel_size) / self.stride) + self.padding,
+                               ((cw - self.kernel_size) / self.stride) + self.padding))
         for iteration, c, h, w in self.loop(inputs):
             prediction[c, h, w] = np.sum(self.kernel * iteration, axis=(1, 2))
 
@@ -81,4 +71,3 @@ class Conv:
         self.kernel -= lr * update_parameters
 
         return None
-
