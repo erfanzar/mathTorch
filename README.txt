@@ -36,13 +36,13 @@ x = relu(linear(x))
     toml_file = read_toml('<path>.toml')
 
     # Reading Txt File
-    txt_file = read_txt('<path>.toml')
+    txt_file = read_txt('<path>.txt')
 
     # Reading Json File
-    json_file = read_json('<path>.toml')
+    json_file = read_json('<path>.json')
 
     # Reading Yaml File
-    yaml_file = read_yaml('<path>.toml')
+    yaml_file = read_yaml('<path>.yaml')
 
     # Downloading file from url
     download('https://urlhere')
