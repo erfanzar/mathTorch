@@ -1,0 +1,25 @@
+[build-system]
+requires = ['setuptools>=42', 'numpy', 'numba', 'json5', 'PyYAML']
+build-backend = 'setuptools.build_meta'
+
+
+
+[project]
+name = "mathTorch"
+version = '0.0.1'
+description = 'some research for the ones who love the see the deep ends'
+readme = "README.md"
+authors = [{ name = "Erfan zare Chavoshi ", email = "erfanzare82@yahoo.com" }]
+
+#dependencies = [
+#    "feedparser >= 5.2.0",
+#    "html2text",
+#    'tomli; python_version < "3.11"',
+#]
+requires-python = ">=3.6"
+
+[project.urls]
+Homepage = "https://github.com/erfanzar/mathTorch"
+
+#[project.scripts]
+#realpython = "mathTorch.__main__:main"

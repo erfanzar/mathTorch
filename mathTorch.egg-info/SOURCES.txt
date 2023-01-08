@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+mathTorch/__init__.py
+mathTorch.egg-info/PKG-INFO
+mathTorch.egg-info/SOURCES.txt
+mathTorch.egg-info/dependency_links.txt
+mathTorch.egg-info/not-zip-safe
+mathTorch.egg-info/top_level.txt

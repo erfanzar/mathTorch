@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: mathTorch
+Version: 0.0.1
+Summary: some research for the ones who love the see the deep ends
+Home-page: https://github.com/erfanzar/
+Author: erfan zare chavoshi
+Author-email: Erfan zare Chavoshi  <erfanzare82@yahoo.com>
+License: MIT
+Project-URL: Homepage, https://github.com/erfanzar/mathTorch
+Requires: numpy
+Requires: numba
+Requires: json5
+Requires: PyYAML
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# mathTorch
+
+ mathTorchis a Python library for deep learning from scratch.
+
+## Installation
+
+Use the package manager [pip](none) to install mathTorch.
+
+```bash
+pip install mathTorch --user
+```
+
+## Usage
+
+```python
+import mathTorch.nn as nn
+
+# Creating just a simple Layer
+
+linear = nn.Linear(1,5)
+relu = nn.ReLU()
+
+# x you input data
+
+x = relu(linear(x))
+
+
+```
+
+## Beta
+
+This Package is still in beta mode and I'm working on it
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
