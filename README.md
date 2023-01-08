@@ -4,7 +4,7 @@
 
 ## Installation
 
-Use the package manager [pip](none) to install mathTorch.
+Use the package manager [pip](https://pypi.org/project/mathTorch/) to install mathTorch.
 
 ```bash
 pip install mathTorch --user
@@ -25,6 +25,73 @@ relu = nn.ReLU()
 x = relu(linear(x))
 
 
+```
+
+## utils
+
+```python
+    from mathTorch.utils.utils import *
+
+    # Reading Toml File
+    toml_file = read_toml('<path>.toml')
+
+    # Reading Txt File
+    txt_file = read_txt('<path>.toml')
+
+    # Reading Json File
+    json_file = read_json('<path>.toml')
+
+    # Reading Yaml File
+    yaml_file = read_yaml('<path>.toml')
+
+    # Downloading file from url
+    download('https://urlhere')
+
+    # Time functions
+    time_sec:str = time_since(since,percent)
+    time_min:str = as_minutes(seconds)
+
+
+    ## and many many more :) go to source ;\ and check
+```
+
+
+
+## lightning
+
+```python
+    from mathTorch.utils.lightning import *
+
+    # Reading Toml File
+    
+
+    #  check if attr exist return attr or false and pass
+    out = attr_exist_check_(attr)
+
+    # calculating iou
+    iou = iou(box1,box2)
+
+      # calculating iou
+    iou_error = bbox_iou(box1, box2, x1y1x2y2=True, GIoU=False, DIoU=False, CIoU=False, eps=1e-7)
+
+     # calculating iou avg
+    avg_iou_acc = avg_iou(boxes,clusters)
+
+    # Kmeans
+    anchors = kmeans(boxes, k, dist=np.median)
+
+    ## and many many more :) go to source ;\ and check
+```
+
+
+## all utils functions 
+
+```python
+    from mathTorch.utils.lightning import *
+    from mathTorch.utils.interface import *
+    from mathTorch.utils.utils import *
+    from mathTorch.utils.nlp import *
+    from mathTorch.utils.fix_dll import *
 ```
 
 ## Beta
