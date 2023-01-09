@@ -6,7 +6,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = "mathTorch"
-version = '0.0.1'
+version = '0.0.5'
 description = 'some research for the ones who love the see the deep ends'
 readme = "README.md"
 authors = [{ name = "Erfan zare Chavoshi ", email = "erfanzare82@yahoo.com" }]

@@ -1,16 +1,20 @@
 import numpy as np
-import yaml
-import typing
 
 
 class Layer:
     def __init__(self):
         pass
 
+    def __call__(self, *args, **kwargs):
+        return self.forward(x=args[0])
+
     def forward(self, x, *args):
         return NotImplementedError
 
     def backward(self, output_error, lr):
+        return NotImplementedError
+
+    def mt(self):
         return NotImplementedError
 
     def ckpt(self, name: str = 'save'):
@@ -25,10 +29,11 @@ class Layer:
             return array
 
 
-class Network(Layer):
-    def __init__(self):
-        super(Network, self).__init__()
-        self.layers = []
+class Sequential(Layer):
+    def __init__(self, *args):
+        super(Sequential, self).__init__()
+        self.layers = [] if len(args) == 0 else [v for v in args]
+
         self.output = None
         self.act = None
         self.error = None
@@ -36,6 +41,20 @@ class Network(Layer):
 
     def add(self, layer):
         self.layers.append(layer)
+
+    def tst(self, x):
+        return self.__class__(x)
+
+    def __str__(self):
+        if len(self.layers) != 0:
+            print('Sequential : (')
+            for v in self.layers:
+                print(f'\t\033[1;36m{v} ,')
+            print(')')
+            return ''
+        else:
+            print('\033[4;32m No Layer is Initialized Yet')
+            return ''
 
     def multi_add(self, **kwargs):
         for args in kwargs:
@@ -55,8 +74,8 @@ class Network(Layer):
                 ]
             } for idx, ls in enumerate(self.layers)]
         print(data)
-        with open(f'{name}.mt', 'w') as w:
-            w.write(f"{data}")
+        with open(f'{name}.mt', 'wb') as w:
+            w.write(bytes(f"{data}"))
 
     def forward(self, x, *args):
         if len(self.layers) > 0:

@@ -3,7 +3,12 @@ try:
     import time
     import numpy as np
     import yaml
-    from .layer import Layer
+
+    try:
+
+        from .layer import Layer
+    except:
+        from layer import Layer
 except OSError:
     import os
 
@@ -41,7 +46,8 @@ class Softmax(Layer):
             texp = np.exp(self.oot)
             s = np.sum(texp)
 
-
+    def __str__(self):
+        return 'Softmax()'
 class ActivationLayer(Layer):
     def __init__(self, use_act: str = 'relu'):
         super(ActivationLayer, self).__init__()
@@ -59,6 +65,7 @@ class ActivationLayer(Layer):
 
         self.x = None
         self.out = None
+        self.use_act = use_act
         self.weights = "ReLU"
         self.bias = "ReLU"
         self.in_dim = "ReLU"
@@ -72,6 +79,8 @@ class ActivationLayer(Layer):
     def backward(self, output_error, lr):
         return self.activation_prime(self.x) * output_error
 
+    def __str__(self):
+        return f'ActivationLayer({self.use_act})'
 
 def tanh(x):
     return np.tanh(x)
@@ -93,11 +102,14 @@ def relu(x):
     return max(0, x.all())
 
 
-class Mse(Layer):
+class MSE(Layer):
     def __init__(self):
-        super(Mse, self).__init__()
+        super().__init__()
         self.y = None
         self.y_hat = None
+
+    def __str__(self):
+        return f'MSE()'
 
     def forward(self, x, *args):
         self.y = x
@@ -117,6 +129,9 @@ class ReLU(Layer):
     def forward(self, x, *args):
         self.out = max(0, x.all())
         return self.out
+
+    def __str__(self):
+        return f'ReLU()'
 
     def backward(self, output_error, lr):
         return self.out * output_error * lr
