@@ -10,6 +10,15 @@ Use the package manager [pip](https://pypi.org/project/mathTorch/) to install ma
 pip install mathTorch --user
 ```
 
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
+
 ## Usage
 
 ```python
@@ -100,6 +109,25 @@ This Package is still in beta mode and I'm working on it
 
 Please make sure to update tests as appropriate.
 
+
+## 🚀 About Me
+Hi there 👋
+I like to train deep neural nets on large datasets 🧠.
+Among other things in this world:)
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
+## Used By
+
+This project is used by the following companies:
+
+- I Don't think like anyone would like to use it why should you use mathTorch when you can use Pytorch v2.0.0 :)
+
+
+
+## Author
+
+- [@erfanzar](https://www.github.com/erfanzar)
